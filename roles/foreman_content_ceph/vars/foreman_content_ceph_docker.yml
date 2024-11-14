@@ -1,0 +1,54 @@
+---
+# noqa: var-naming[no-role-prefix]
+
+foreman_products_defaults: &foreman_products_defaults
+  content_type: yum
+  gpg_key: "{{ foreman_cred_name_prefix | default('') }}RPM-GPG-KEY-Ceph-release"
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph }}"
+  # mirror_on_sync: True
+  # mirroring_policy: "additive"
+  # mirroring_policy: "mirror_content_only"
+  # mirroring_policy: "mirror_complete"
+  mirroring_policy: "{{ foreman_products_defaults_mirroring_policy_ceph }}"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph | bool }}"
+  # http_proxy: Default Proxy
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph | bool }}"
+
+
+foreman_products_defaults_ceph_docker: &foreman_products_defaults_ceph_docker
+  <<: *foreman_products_defaults
+  content_type: docker
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph_docker }}"
+  mirroring_policy: "mirror_content_only"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph_docker | bool }}"
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph_docker }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph_docker | bool }}"
+
+
+foreman_products_ceph_docker:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_docker }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph Docker images"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-docker"
+        url: "{{ foreman_repo_baseurl_ceph_docker }}"
+        docker_upstream_name: ceph/ceph
+        # docker_tags_whitelist:
+        #   - ceph/ceph
+        # include_tags: []
+        exclude_tags:
+          - "*-source"
+        <<: *foreman_products_defaults_ceph_docker
+        organization: "{{ foreman_organization_ceph_docker }}"
+
+
+foreman_content_views_ceph_docker:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_docker"
+    organization: "{{ foreman_organization_ceph_nautilus_ub2004 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph Docker images"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_docker }}"
+

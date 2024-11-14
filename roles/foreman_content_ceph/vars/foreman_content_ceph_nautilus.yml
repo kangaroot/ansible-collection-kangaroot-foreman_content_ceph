@@ -1,0 +1,229 @@
+---
+# noqa: var-naming[no-role-prefix]
+
+foreman_products_defaults: &foreman_products_defaults
+  content_type: yum
+  gpg_key: "{{ foreman_cred_name_prefix | default('') }}RPM-GPG-KEY-Ceph-release"
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph }}"
+  # mirror_on_sync: True
+  # mirroring_policy: "additive"
+  # mirroring_policy: "mirror_content_only"
+  # mirroring_policy: "mirror_complete"
+  mirroring_policy: "{{ foreman_products_defaults_mirroring_policy_ceph }}"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph | bool }}"
+  # http_proxy: Default Proxy
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph | bool }}"
+
+foreman_products_defaults_deb: &foreman_products_defaults_deb
+  <<: *foreman_products_defaults
+  content_type: deb
+  mirroring_policy: "mirror_content_only"
+  deb_components: main
+  deb_architectures: amd64
+
+
+foreman_products_defaults_ceph_nautilus: &foreman_products_defaults_ceph_nautilus
+  <<: *foreman_products_defaults
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph_nautilus }}"
+  mirroring_policy: "{{ foreman_products_defaults_mirroring_policy_ceph_nautilus }}"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph_nautilus | bool }}"
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph_nautilus }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph_nautilus | bool }}"
+
+foreman_products_defaults_ceph_nautilus_deb: &foreman_products_defaults_ceph_nautilus_deb
+  <<: *foreman_products_defaults_deb
+  content_type: deb
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph_nautilus }}"
+  mirroring_policy: "mirror_content_only"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph_nautilus | bool }}"
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph_nautilus }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph_nautilus | bool }}"
+  deb_components: main
+  deb_architectures: amd64
+
+
+foreman_products_ceph_nautilus_el7:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_nautilus_el7 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Nautilus - EL7"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-nautilus-el7"
+        <<: *foreman_products_defaults_ceph_nautilus
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_el7 }}/rpm-nautilus/el7/x86_64/"
+        organization: "{{ foreman_organization_ceph_nautilus_el7 }}"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Nautilus - EL7"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-noarch-nautilus-el7"
+        <<: *foreman_products_defaults_ceph_nautilus
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_el7 }}/rpm-nautilus/el7/noarch"
+        organization: "{{ foreman_organization_ceph_nautilus_el7 }}"
+
+foreman_products_ceph_nautilus_el8:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_nautilus_el8 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Nautilus - EL8"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-nautilus-el8"
+        <<: *foreman_products_defaults_ceph_nautilus
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_el8 }}/rpm-nautilus/el8/x86_64/"
+        organization: "{{ foreman_organization_ceph_nautilus_el8 }}"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Nautilus - EL8"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-noarch-nautilus-el8"
+        <<: *foreman_products_defaults_ceph_nautilus
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_el8 }}/rpm-nautilus/el8/noarch"
+        organization: "{{ foreman_organization_ceph_nautilus_el8 }}"
+
+foreman_products_ceph_nautilus_deb9:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_nautilus_deb9 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Debian 9 (Stretch)"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-nautilus-debian-stretch"
+        <<: *foreman_products_defaults_ceph_nautilus_deb
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_deb9 }}/debian-nautilus/"
+        deb_releases: stretch
+        organization: "{{ foreman_organization_ceph_nautilus_deb9 }}"
+
+foreman_products_ceph_nautilus_deb10:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_nautilus_deb10 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Debian 10 (Buster)"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-nautilus-debian-buster"
+        <<: *foreman_products_defaults_ceph_nautilus_deb
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_deb10 }}/debian-nautilus/"
+        deb_releases: buster
+        organization: "{{ foreman_organization_ceph_nautilus_deb10 }}"
+
+foreman_products_ceph_nautilus_ub1804:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_nautilus_ub1804 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Ubuntu 18.04 LTS (Bionic Beaver)"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-nautilus-ubuntu-bionic"
+        <<: *foreman_products_defaults_ceph_nautilus_deb
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_ub1804 }}/debian-nautilus/"
+        deb_releases: bionic
+        organization: "{{ foreman_organization_ceph_nautilus_ub1804 }}"
+
+foreman_products_ceph_nautilus_ub2004:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_nautilus_ub2004 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Ubuntu 20.04 LTS (Focal Fossa)"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-nautilus-ubuntu-focal"
+        <<: *foreman_products_defaults_ceph_nautilus_deb
+        url: "{{ foreman_repo_baseurl_ceph_nautilus_ub2004 }}/debian-nautilus/"
+        deb_releases: focal
+        organization: "{{ foreman_organization_ceph_nautilus_ub2004 }}"
+
+
+foreman_content_views_ceph_nautilus_el7:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_nautilus_el7"
+    organization: "{{ foreman_organization_ceph_nautilus_el7 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Nautilus - EL7"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Nautilus - EL7"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_nautilus_el7 }}"
+
+foreman_content_views_ceph_nautilus_el8:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_nautilus_el8"
+    organization: "{{ foreman_organization_ceph_nautilus_el8 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Nautilus - EL8"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Nautilus - EL8"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_nautilus_el8 }}"
+
+foreman_content_views_ceph_nautilus_deb9:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_nautilus_deb9"
+    organization: "{{ foreman_organization_ceph_nautilus_deb9 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Debian 9 (Stretch)"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_nautilus_deb9 }}"
+
+foreman_content_views_ceph_nautilus_deb10:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_nautilus_deb10"
+    organization: "{{ foreman_organization_ceph_nautilus_deb10 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Debian 10 (Buster)"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_nautilus_deb10 }}"
+
+foreman_content_views_ceph_nautilus_ub1804:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_nautilus_ub1804"
+    organization: "{{ foreman_organization_ceph_nautilus_ub1804 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Ubuntu 18.04 LTS (Bionic Beaver)"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_nautilus_ub1804 }}"
+
+foreman_content_views_ceph_nautilus_ub2004:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_nautilus_ub2004"
+    organization: "{{ foreman_organization_ceph_nautilus_ub2004 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Nautilus - Ubuntu 20.04 LTS (Focal Fossa)"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_nautilus_ub2004 }}"
+
+
+foreman_content_views_ceph_nautilus_main: []
+foreman_content_views_ceph_nautilus: "{{ ( foreman_content_views_ceph_nautilus_main | default([]) if foreman_enable_ceph_nautilus | bool else [] ) |
+  union( foreman_content_views_ceph_nautilus_el7 | default([]) if foreman_enable_ceph_nautilus_el7 | bool else [] ) |
+  union( foreman_content_views_ceph_nautilus_el8 | default([]) if foreman_enable_ceph_nautilus_el8 | bool else [] ) |
+  union( foreman_content_views_ceph_nautilus_deb9 | default([]) if foreman_enable_ceph_nautilus_deb9 | bool else [] ) |
+  union( foreman_content_views_ceph_nautilus_deb10 | default([]) if foreman_enable_ceph_nautilus_deb10 | bool else [] ) |
+  union( foreman_content_views_ceph_nautilus_ub1804 | default([]) if foreman_enable_ceph_nautilus_ub1804 | bool else [] ) |
+  union( foreman_content_views_ceph_nautilus_ub2004 | default([]) if foreman_enable_ceph_nautilus_ub2004 | bool else [] )
+  }}"
+
+foreman_operatingsystems_ceph_nautilus_main: []
+foreman_operatingsystems_ceph_nautilus: "{{ ( foreman_operatingsystems_ceph_nautilus_main | default([]) if foreman_enable_ceph_nautilus | bool else [] ) |
+  union( foreman_operatingsystems_ceph_nautilus_el7 | default([]) if foreman_enable_ceph_nautilus_el7 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_nautilus_el8 | default([]) if foreman_enable_ceph_nautilus_el8 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_nautilus_deb9 | default([]) if foreman_enable_ceph_nautilus_deb9 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_nautilus_deb10 | default([]) if foreman_enable_ceph_nautilus_deb10 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_nautilus_ub1804 | default([]) if foreman_enable_ceph_nautilus_ub1804 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_nautilus_ub2004 | default([]) if foreman_enable_ceph_nautilus_ub2004 | bool else [] )
+  }}"
+
+foreman_installation_media_ceph_nautilus_main: []
+foreman_installation_media_ceph_nautilus: "{{ ( foreman_installation_media_ceph_nautilus_main | default([]) if foreman_enable_ceph_nautilus | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_el7 | default([]) if foreman_enable_ceph_nautilus_el7 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_el8 | default([]) if foreman_enable_ceph_nautilus_el8 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_deb9 | default([]) if foreman_enable_ceph_nautilus_deb9 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_deb10 | default([]) if foreman_enable_ceph_nautilus_deb10 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_ub1804 | default([]) if foreman_enable_ceph_nautilus_ub1804 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_ub2004 | default([]) if foreman_enable_ceph_nautilus_ub2004 | bool else [] )
+  }}"
+
+foreman_activation_keys_ceph_nautilus_main: []
+foreman_activation_keys_ceph_nautilus: "{{ ( foreman_activation_keys_ceph_nautilus_main | default([]) if foreman_enable_ceph_nautilus | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_el7 | default([]) if foreman_enable_ceph_nautilus_el7 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_el8 | default([]) if foreman_enable_ceph_nautilus_el8 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_deb9 | default([]) if foreman_enable_ceph_nautilus_deb9 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_deb10 | default([]) if foreman_enable_ceph_nautilus_deb10 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_ub1804 | default([]) if foreman_enable_ceph_nautilus_ub1804 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_ub2004 | default([]) if foreman_enable_ceph_nautilus_ub2004 | bool else [] )
+  }}"
+
+foreman_sync_plan_products_ceph_nautilus_main: []
+foreman_sync_plan_products_ceph_nautilus: "{{ ( foreman_sync_plan_products_ceph_nautilus_main | default([]) if foreman_enable_ceph_nautilus | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_el7 | default([]) if foreman_enable_ceph_nautilus_el7 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_el8 | default([]) if foreman_enable_ceph_nautilus_el8 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_deb9 | default([]) if foreman_enable_ceph_nautilus_deb9 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_deb10 | default([]) if foreman_enable_ceph_nautilus_deb10 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_ub1804 | default([]) if foreman_enable_ceph_nautilus_ub1804 | bool else [] ) |
+  union( foreman_installation_media_ceph_nautilus_ub2004 | default([]) if foreman_enable_ceph_nautilus_ub2004 | bool else [] )
+  }}"
+

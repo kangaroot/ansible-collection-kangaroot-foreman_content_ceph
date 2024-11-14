@@ -1,0 +1,222 @@
+---
+# noqa: var-naming[no-role-prefix]
+
+foreman_products_defaults: &foreman_products_defaults
+  content_type: yum
+  gpg_key: "{{ foreman_cred_name_prefix | default('') }}RPM-GPG-KEY-Ceph-release"
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph }}"
+  # mirror_on_sync: True
+  # mirroring_policy: "additive"
+  # mirroring_policy: "mirror_content_only"
+  # mirroring_policy: "mirror_complete"
+  mirroring_policy: "{{ foreman_products_defaults_mirroring_policy_ceph }}"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph | bool }}"
+  # http_proxy: Default Proxy
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph | bool }}"
+
+foreman_products_defaults_deb: &foreman_products_defaults_deb
+  <<: *foreman_products_defaults
+  content_type: deb
+  mirroring_policy: "mirror_content_only"
+  deb_components: main
+  deb_architectures: amd64
+
+
+foreman_products_defaults_ceph_reef: &foreman_products_defaults_ceph_reef
+  <<: *foreman_products_defaults
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph_reef }}"
+  mirroring_policy: "{{ foreman_products_defaults_mirroring_policy_ceph_reef }}"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph_reef | bool }}"
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph_reef }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph_reef | bool }}"
+
+foreman_products_defaults_ceph_reef_deb: &foreman_products_defaults_ceph_reef_deb
+  <<: *foreman_products_defaults_deb
+  content_type: deb
+  download_policy: "{{ foreman_products_defaults_download_policy_ceph_reef }}"
+  mirroring_policy: "mirror_content_only"
+  verify_ssl_on_sync: "{{ foreman_products_defaults_verify_ssl_on_sync_ceph_reef | bool }}"
+  http_proxy_policy: "{{ foreman_products_defaults_http_proxy_policy_ceph_reef }}"
+  unprotected: "{{ foreman_products_defaults_unprotected_ceph_reef | bool }}"
+  deb_components: main
+  deb_architectures: amd64
+
+
+foreman_products_ceph_reef_el8:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_reef_el8 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Reef - EL8"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-reef-el8"
+        <<: *foreman_products_defaults_ceph_reef
+        url: "{{ foreman_repo_baseurl_ceph_reef_el8 }}/rpm-reef/el8/x86_64/"
+        organization: "{{ foreman_organization_ceph_reef_el8 }}"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Reef - EL8"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-noarch-reef-el8"
+        <<: *foreman_products_defaults_ceph_reef
+        url: "{{ foreman_repo_baseurl_ceph_reef_el8 }}/rpm-reef/el8/noarch"
+        organization: "{{ foreman_organization_ceph_reef_el8 }}"
+
+foreman_products_ceph_reef_el9:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_reef_el9 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Reef - EL9"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-reef-el9"
+        <<: *foreman_products_defaults_ceph_reef
+        url: "{{ foreman_repo_baseurl_ceph_reef_el9 }}/rpm-reef/el9/x86_64/"
+        organization: "{{ foreman_organization_ceph_reef_el9 }}"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Reef - EL9"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-noarch-reef-el9"
+        <<: *foreman_products_defaults
+        url: "{{ foreman_repo_baseurl_ceph_reef_el9 }}/rpm-reef/el9/noarch"
+        organization: "{{ foreman_organization_ceph_reef_el9 }}"
+
+foreman_products_ceph_reef_deb11:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_reef_deb11 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Reef - Debian 11 (Bullseye)"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-reef-debian-bullseye"
+        <<: *foreman_products_defaults_ceph_reef_deb
+        url: "{{ foreman_repo_baseurl_ceph_reef_deb11 }}/debian-reef/"
+        deb_releases: bullseye
+        organization: "{{ foreman_organization_ceph_reef_deb11 }}"
+
+foreman_products_ceph_reef_ub2004:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_reef_ub2004 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Reef - Ubuntu 20.04 LTS (Focal Fossa)"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-reef-ubuntu-focal"
+        <<: *foreman_products_defaults_ceph_reef_deb
+        url: "{{ foreman_repo_baseurl_ceph_reef_ub2004 }}/debian-reef/"
+        deb_releases: focal
+        organization: "{{ foreman_organization_ceph_reef_ub2004 }}"
+
+foreman_products_ceph_reef_ub2204:
+  - name: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    label: "{{ foreman_product_label_prefix | default('') }}Ceph"
+    organization: "{{ foreman_organization_ceph_reef_ub2204 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Reef - Ubuntu 22.04 LTS (Jammy Jellyfish)"
+        label: "{{ foreman_repo_label_prefix | default('') }}ceph-reef-ubuntu-jammy"
+        <<: *foreman_products_defaults_ceph_reef_deb
+        url: "{{ foreman_repo_baseurl_ceph_reef_ub2204 }}/debian-reef/"
+        deb_releases: jammy
+        organization: "{{ foreman_organization_ceph_reef_ub2204 }}"
+
+
+foreman_content_views_ceph_reef_el8:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_reef_el8"
+    organization: "{{ foreman_organization_ceph_reef_el8 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Reef - EL8"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Reef - EL8"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_reef_el8 }}"
+
+foreman_content_views_ceph_reef_el9:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_reef_el9"
+    organization: "{{ foreman_organization_ceph_reef_el9 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for x86_64 - Reef - EL9"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph noarch packages - Reef - EL9"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_reef_el9 }}"
+
+foreman_content_views_ceph_reef_deb11:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_reef_deb11"
+    organization: "{{ foreman_organization_ceph_reef_deb11 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Reef - Debian 11 (Bullseye)"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_reef_deb11 }}"
+
+foreman_content_views_ceph_reef_ub2004:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_reef_ub2004"
+    organization: "{{ foreman_organization_ceph_reef_ub2004 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Reef - Ubuntu 20.04 LTS (Focal Fossa)"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_reef_ub2004 }}"
+
+foreman_content_views_ceph_reef_ub2204:
+  - name: "{{ foreman_cv_prefix | default('cv_') }}{{ foreman_cv_name_prefix | default('') }}ceph_reef_ub2204"
+    organization: "{{ foreman_organization_ceph_reef_ub2204 }}"
+    repositories:
+      - name: "{{ foreman_repo_name_prefix | default('') }}Ceph packages for amd64 - Reef - Ubuntu 22.04 LTS (Jammy Jellyfish)"
+        product: "{{ foreman_product_name_prefix | default('') }}Ceph"
+    allow_promote: "{{ foreman_cv_allow_promote_ceph_reef_ub2204 }}"
+
+
+foreman_content_credentials_ceph_reef_main: []
+foreman_content_credentials_ceph_reef: "{{ ( foreman_content_credentials_ceph_reef_main | default([]) if foreman_enable_ceph_reef | bool else [] ) |
+  union( foreman_content_credentials_ceph_reef_el8 | default([]) if foreman_enable_ceph_reef_el8 | bool else [] ) |
+  union( foreman_content_credentials_ceph_reef_el9 | default([]) if foreman_enable_ceph_reef_el9 | bool else [] ) |
+  union( foreman_content_credentials_ceph_reef_deb11 | default([]) if foreman_enable_ceph_reef_deb11 | bool else [] ) |
+  union( foreman_content_credentials_ceph_reef_ub2004 | default([]) if foreman_enable_ceph_reef_ub2004 | bool else [] ) |
+  union( foreman_content_credentials_ceph_reef_ub2204 | default([]) if foreman_enable_ceph_reef_ub2204 | bool else [] )
+  }}"
+
+foreman_products_ceph_reef_main: []
+foreman_products_ceph_reef: "{{ ( foreman_products_ceph_reef_main | default([]) if foreman_enable_ceph_reef | bool else [] ) |
+  union( foreman_products_ceph_reef_el8 | default([]) if foreman_enable_ceph_reef_el8 | bool else [] ) |
+  union( foreman_products_ceph_reef_el9 | default([]) if foreman_enable_ceph_reef_el9 | bool else [] ) |
+  union( foreman_products_ceph_reef_deb11 | default([]) if foreman_enable_ceph_reef_deb11 | bool else [] ) |
+  union( foreman_products_ceph_reef_ub2004 | default([]) if foreman_enable_ceph_reef_ub2004 | bool else [] ) |
+  union( foreman_products_ceph_reef_ub2204 | default([]) if foreman_enable_ceph_reef_ub2204 | bool else [] )
+  }}"
+
+foreman_content_views_ceph_reef_main: []
+foreman_content_views_ceph_reef: "{{ ( foreman_content_views_ceph_reef_main | default([]) if foreman_enable_ceph_reef | bool else [] ) |
+  union( foreman_content_views_ceph_reef_el8 | default([]) if foreman_enable_ceph_reef_el8 | bool else [] ) |
+  union( foreman_content_views_ceph_reef_el9 | default([]) if foreman_enable_ceph_reef_el9 | bool else [] ) |
+  union( foreman_content_views_ceph_reef_deb11 | default([]) if foreman_enable_ceph_reef_deb11 | bool else [] ) |
+  union( foreman_content_views_ceph_reef_ub2004 | default([]) if foreman_enable_ceph_reef_ub2004 | bool else [] ) |
+  union( foreman_content_views_ceph_reef_ub2204 | default([]) if foreman_enable_ceph_reef_ub2204 | bool else [] )
+  }}"
+
+foreman_operatingsystems_ceph_reef_main: []
+foreman_operatingsystems_ceph_reef: "{{ ( foreman_operatingsystems_ceph_reef_main | default([]) if foreman_enable_ceph_reef | bool else [] ) |
+  union( foreman_operatingsystems_ceph_reef_el8 | default([]) if foreman_enable_ceph_reef_el8 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_reef_el9 | default([]) if foreman_enable_ceph_reef_el9 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_reef_deb11 | default([]) if foreman_enable_ceph_reef_deb11 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_reef_ub2004 | default([]) if foreman_enable_ceph_reef_ub2004 | bool else [] ) |
+  union( foreman_operatingsystems_ceph_reef_ub2204 | default([]) if foreman_enable_ceph_reef_ub2204 | bool else [] )
+  }}"
+
+foreman_installation_media_ceph_reef_main: []
+foreman_installation_media_ceph_reef: "{{ ( foreman_installation_media_ceph_reef_main | default([]) if foreman_enable_ceph_reef | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_el8 | default([]) if foreman_enable_ceph_reef_el8 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_el9 | default([]) if foreman_enable_ceph_reef_el9 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_deb11 | default([]) if foreman_enable_ceph_reef_deb11 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_ub2004 | default([]) if foreman_enable_ceph_reef_ub2004 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_ub2204 | default([]) if foreman_enable_ceph_reef_ub2204 | bool else [] )
+  }}"
+
+foreman_activation_keys_ceph_reef_main: []
+foreman_activation_keys_ceph_reef: "{{ ( foreman_activation_keys_ceph_reef_main | default([]) if foreman_enable_ceph_reef | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_el8 | default([]) if foreman_enable_ceph_reef_el8 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_el9 | default([]) if foreman_enable_ceph_reef_el9 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_deb11 | default([]) if foreman_enable_ceph_reef_deb11 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_ub2004 | default([]) if foreman_enable_ceph_reef_ub2004 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_ub2204 | default([]) if foreman_enable_ceph_reef_ub2204 | bool else [] )
+  }}"
+
+foreman_sync_plan_products_ceph_reef_main: []
+foreman_sync_plan_products_ceph_reef: "{{ ( foreman_sync_plan_products_ceph_reef_main | default([]) if foreman_enable_ceph_reef | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_el8 | default([]) if foreman_enable_ceph_reef_el8 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_el9 | default([]) if foreman_enable_ceph_reef_el9 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_deb11 | default([]) if foreman_enable_ceph_reef_deb11 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_ub2004 | default([]) if foreman_enable_ceph_reef_ub2004 | bool else [] ) |
+  union( foreman_installation_media_ceph_reef_ub2204 | default([]) if foreman_enable_ceph_reef_ub2204 | bool else [] )
+  }}"
+
